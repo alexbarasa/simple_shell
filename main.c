@@ -13,9 +13,20 @@
  */
 void handle_command(char *cmd)
 {
-	char *argv[2];
+	char *argv[MAX_CMD_LEN];
+	char *token;
+	int i = 0;
 	int status;
 	pid_t pid;
+
+	token = strtok(cmd, " ");
+	while (token != NULL)
+	{
+		argv[i] = token;
+		i++;
+		token = strtok(NULL, " ");
+	}
+	argv[i] = NULL; /*Last element should be NULL for execve*/
 
 	pid = fork();
 
@@ -28,13 +39,10 @@ void handle_command(char *cmd)
 	if (pid == 0)
 	{
 		/*Child process*/
-		argv[0] = cmd;
-		argv[1] = NULL;
-
-		execve(cmd, argv, NULL);
+		execve(argv[0], argv, NULL);
 
 		/*If execve returns, it must have failed*/
-		perror(cmd);
+		perror(argv[0]);
 		exit(0);
 	}
 	else
