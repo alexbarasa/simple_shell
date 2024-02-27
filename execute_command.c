@@ -1,4 +1,4 @@
-#include "main.h"
+#include "shell.h"
 /**
  * execute_command - execute a command
  * @full_path: the full path to the command

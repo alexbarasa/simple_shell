@@ -1,4 +1,4 @@
-#include "main.h"
+#include "shell.h"
 
 /**
  * handle_command - handle a command
@@ -18,14 +18,15 @@ void handle_command(char *cmd)
 		i++;
 		token = strtok(NULL, " ");
 	}
-	argv[i] = NULL; /*Null-terminate the argument list*/
-	/*chek if the command is 'exit*/
+	argv[i] = NULL; /* Null-terminate the argument list */
+
+	/* Check if the command is 'exit' */
 	if (strcmp(argv[0], "exit") == 0)
 	{
-		exit(0);
+		_exit(0);
 	}
 
-	/*check if the command is 'env*/
+	/* Check if the command is 'env' */
 	if (strcmp(argv[0], "env") == 0)
 	{
 		print_env();
@@ -35,7 +36,7 @@ void handle_command(char *cmd)
 	full_path = search_path(argv[0]);
 	if (full_path == NULL)
 	{
-		printf("%s: command not found\n", argv[0]);
+		perror("Error");
 		return;
 	}
 

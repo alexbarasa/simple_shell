@@ -1,5 +1,5 @@
-#ifndef _MAIN_H_
-#define _MAIN_H_
+#ifndef _SHELL_H_
+#define _SHELL_H_
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -7,9 +7,10 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include "shell.h"
 #include <unistd.h>
 
-#define MAX_CMD_LEN 256
+#define MAX_CMD_LEN 1024
 extern char **environ;
 
 char *build_full_path(char *directory, char *cmd);
@@ -19,4 +20,4 @@ void handle_command(char *cmd);
 char *search_path(char *cmd);
 void print_env();
 
-#endif /*_MAIN_H*/
+#endif /*_SHELL_H*/

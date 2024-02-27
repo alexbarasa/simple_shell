@@ -1,5 +1,4 @@
-#include "main.h"
-
+#include "shell.h"
 
 /**
  * main - simple shell
@@ -8,16 +7,19 @@
  */
 int main(void)
 {
-	char cmd[MAX_CMD_LEN];
+	char *cmd = malloc(MAX_CMD_LEN);
+	ssize_t nread;
+	size_t len = MAX_CMD_LEN;
 
 	while (1)
 	{
-		printf("simple_shell> ");
+		write(STDOUT_FILENO, "simple_shell> ", 14);
 
-		if (fgets(cmd, sizeof(cmd), stdin) == NULL)
+		nread = getline(&cmd, &len, stdin);
+		if (nread == -1)
 		{
 			/*End of file (Ctrl+D) condition*/
-			printf("\n");
+			write(STDOUT_FILENO, "\n", 1);
 			exit(0);
 		}
 
@@ -27,5 +29,6 @@ int main(void)
 		handle_command(cmd);
 	}
 
+	free(cmd);
 	return (0);
 }
