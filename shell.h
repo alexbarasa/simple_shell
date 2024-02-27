@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #ifndef _SHELL_H_
 #define _SHELL_H_
 
@@ -21,3 +22,10 @@ char *search_path(char *cmd);
 void print_env();
 
 #endif /*_SHELL_H*/
+=======
+#ifndef SHELL_H
+#define SHELL_H
+void tokenize_command(char *command, char **args);
+void execute_command(char **args);
+#endif
+>>>>>>> cb4bfa07b144f67bf92e3bd8d1edb85ae0b85d1c
