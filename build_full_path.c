@@ -1,4 +1,4 @@
-#include "main.h"
+#include "shell.h"
 
 /**
  * build_full_path - build the full path to a command
@@ -11,6 +11,9 @@ char *build_full_path(char *directory, char *cmd)
 {
 	char *full_path = malloc(MAX_CMD_LEN);
 
-	snprintf(full_path, MAX_CMD_LEN, "%s/%s", directory, cmd);
+	strcpy(full_path, directory);
+	strcat(full_path, "/");
+	strcat(full_path, cmd);
+
 	return (full_path);
 }
