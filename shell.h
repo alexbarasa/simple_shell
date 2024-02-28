@@ -15,7 +15,7 @@ int command_exists(char *full_path);
 void execute_command(char *full_path, char **argv);
 void handle_command(char *cmd);
 char *search_path(char *cmd);
-void print_env();
+void print_env(void);
 void tokenize_command(char *command, char **args);
 void execute_cm(char **args);
 #endif
