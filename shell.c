@@ -1,10 +1,9 @@
-#include "shell.h"
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <stdio.h>
+#include "shell.h"
 #define MAX_CMD_LEN 1024
-
 /**
  * main - simple shell
  *
@@ -12,14 +11,15 @@
  */
 int main(void)
 {
-	char *cmd = malloc(MAX_CMD_LEN);
+	size_t bufsize = 0;
 	ssize_t nread;
+	char *cmd = NULL;
 
 	while (1)
 	{
 		write(STDOUT_FILENO, "simple_shell> ", 14);
 
-		nread = getline(&cmd, (size_t*)&MAX_CMD_LEN, stdin);
+		nread = getline(&cmd, &bufsize, stdin);
 		if (nread == -1)
 		{
 			/*End of file (Ctrl+D) condition*/
