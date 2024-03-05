@@ -1,37 +1,40 @@
-#include "shell.h"
+#include "main.h"
+
 /**
- * execute_command - execute a command
- * @full_path: the full path to the command
- * @argv: the arguments to the command
+ * execute_command - Execute the command
+ * @argv: An array of arguments
+ * Return: Nothing
  */
-void execute_command(char *full_path, char **argv)
+void execute_command(char **argv)
 {
-	pid_t pid;
+	char *cmd_path;
 	int status;
+	pid_t pid;
 
-	pid = fork();
-
-	if (pid == -1)
+	cmd_path = search_path(argv[0]);
+	if (cmd_path == NULL)
 	{
-		perror("fork failed");
-		exit(1);
+		printf("%s: command not found\n", argv[0]);
+		return;
 	}
 
-	if (pid == 0)
+	pid = fork();
+	if (pid < 0)
 	{
-		/*Child process*/
-		execve(full_path, argv, NULL);
+		perror("Fork error");
+		exit(1);
+	}
+	else if (pid == 0)
+	{
+		execve(cmd_path, argv, NULL);
 
-		/*If execve returns, it must have failed*/
-		perror(full_path);
-		exit(0);
+		perror("execve error");
+		exit(1);
 	}
 	else
 	{
-		/*Parent process*/
-		if (waitpid(pid, &status, 0) != pid)
-		{
-			perror("waitpid failed");
-		}
+		wait(&status);
 	}
+
+	free(cmd_path);
 }

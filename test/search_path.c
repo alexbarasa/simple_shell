@@ -1,32 +1,39 @@
-#include "shell.h"
+#include "main.h"
 
 /**
- * search_path - search for a command in the PATH
- * @cmd: the command to search for
- *
- * Return: the full path to the command, or NULL if not found
+ * search_path - Search for the command in the PATH environment variable
+ * @cmd: The command to search for
+ * Return: The full path to the command, or NULL if not found
  */
 char *search_path(char *cmd)
 {
 	char *path = getenv("PATH");
-	char *directory;
-	char *full_path = malloc(MAX_CMD_LEN);
-	struct stat st;
+	char *path_copy = strdup(path);
+	char *dir = strtok(path_copy, ":");
 
-	directory = strtok(path, ":");
-
-	while (directory != NULL)
+	if (cmd[0] == '/')
 	{
-		snprintf(full_path, MAX_CMD_LEN, "%s/%s", directory, cmd);
-
-		if (stat(full_path, &st) == 0 && (st.st_mode & S_IXUSR))
-		{
-			return (full_path);
-		}
-
-		directory = strtok(NULL, ":");
+		return (strdup(cmd));
 	}
 
-	free(full_path);
+	while (dir != NULL)
+	{
+		char *cmd_path = malloc(strlen(dir) + strlen(cmd) + 2);
+
+		strcpy(cmd_path, dir);
+		strcat(cmd_path, "/");
+		strcat(cmd_path, cmd);
+
+		if (access(cmd_path, X_OK) == 0)
+		{
+			free(path_copy);
+			return (cmd_path);
+		}
+
+		free(cmd_path);
+		dir = strtok(NULL, ":");
+	}
+
+	free(path_copy);
 	return (NULL);
 }
